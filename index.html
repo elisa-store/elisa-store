@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELISA STORE — Butik Online Pakaian & Aksesori</title>
+<meta name="description" content="ELISA STORE — pakaian & aksesori terkurasi, kualitas butik harga bersahabat. Order mudah via WhatsApp +62 823-8165-6721.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --paper:#F4EDE1; --paper2:#FBF6EC; --paper3:#EAE0CC;
+  --ink:#221C13; --ink2:#4E4536; --mut:#8A7E6B;
+  --rust:#B44E24; --rust-d:#8F3A16; --moss:#5E6B45; --gold:#C89B3C;
+  --line:rgba(34,28,19,.16); --line-s:rgba(34,28,19,.32);
+  --fd:"Fraunces",serif; --fb:"Manrope",sans-serif; --fm:"IBM Plex Mono",monospace;
+  --sh:0 24px 50px -22px rgba(34,28,19,.35);
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{font-family:var(--fb);background:var(--paper);color:var(--ink);line-height:1.65;font-size:16px;overflow-x:hidden}
+::selection{background:var(--rust);color:#fff}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;background:none;border:0;color:inherit}
+.wrap{max-width:1240px;margin:0 auto;padding:0 clamp(18px,4vw,40px)}
+.mono{font-family:var(--fm)}
+h1,h2,h3,.disp{font-family:var(--fd);font-weight:600;line-height:1.05;letter-spacing:-.01em}
+em{font-style:italic;font-family:var(--fd)}
+
+/* grain */
+.grain{position:fixed;inset:0;z-index:9990;pointer-events:none;opacity:.055;mix-blend-mode:multiply;
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ============ TICKERS ============ */
+.tk{overflow:hidden;background:var(--ink);color:var(--paper);border-bottom:1px solid rgba(244,237,225,.15)}
+.tk-track{display:flex;width:max-content;animation:slide 30s linear infinite}
+.tk.rev .tk-track{animation-direction:reverse}
+.tk span{display:flex;align-items:center;gap:2.2em;padding:.62em 1.1em;font-family:var(--fm);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap}
+.tk i{font-style:normal;color:var(--gold)}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* ============ HEADER ============ */
+.hdr{position:sticky;top:0;z-index:200;background:rgba(244,237,225,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);transition:box-shadow .3s}
+.hdr.sc{box-shadow:0 10px 30px -18px rgba(34,28,19,.35)}
+.hdr-in{display:flex;align-items:center;justify-content:space-between;gap:20px;height:74px}
+.logo{font-family:var(--fd);font-size:1.6rem;font-weight:700;letter-spacing:-.02em;line-height:1;display:flex;flex-direction:column}
+.logo em{font-size:1.6rem}
+.logo small{font-family:var(--fm);font-size:.58rem;letter-spacing:.42em;color:var(--rust);margin-top:3px;font-weight:500}
+.nav{display:flex;gap:28px}
+.nav a{font-size:.82rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;position:relative;padding:4px 0}
+.nav a::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:2px;background:var(--rust);transform:scaleX(0);transform-origin:right;transition:transform .35s var(--ease)}
+.nav a:hover::after{transform:scaleX(1);transform-origin:left}
+.hdr-act{display:flex;align-items:center;gap:12px}
+.cart-btn{position:relative;width:44px;height:44px;border:1.5px solid var(--ink);border-radius:50%;display:grid;place-items:center;transition:.25s}
+.cart-btn:hover{background:var(--ink);color:var(--paper)}
+.cart-n{position:absolute;top:-5px;right:-6px;min-width:19px;height:19px;padding:0 4px;border-radius:20px;background:var(--rust);color:#fff;font-family:var(--fm);font-size:.62rem;font-weight:600;display:grid;place-items:center}
+.burger{display:none;width:44px;height:44px;border:1.5px solid var(--ink);border-radius:50%;flex-direction:column;align-items:center;justify-content:center;gap:5px}
+.burger b{width:18px;height:2px;background:var(--ink);transition:.3s}
+.m-menu{position:fixed;inset:0;background:var(--ink);color:var(--paper);z-index:400;display:flex;flex-direction:column;padding:26px clamp(20px,6vw,48px);transform:translateY(-100%);transition:transform .55s var(--ease)}
+.m-menu.open{transform:none}
+.m-top{display:flex;justify-content:space-between;align-items:center}
+.m-close{font-family:var(--fm);font-size:.8rem;letter-spacing:.2em;border:1px solid rgba(244,237,225,.4);padding:.6em 1.2em;border-radius:40px;color:var(--paper)}
+.m-links{margin:auto 0;display:flex;flex-direction:column;gap:6px}
+.m-links a{font-family:var(--fd);font-size:clamp(2rem,8vw,3.4rem);font-weight:600;padding:4px 0;border-bottom:1px solid rgba(244,237,225,.12);display:flex;justify-content:space-between;align-items:baseline}
+.m-links a small{font-family:var(--fm);font-size:.7rem;color:var(--gold)}
+.m-wa{margin-top:24px}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:10px;padding:1em 1.7em;border-radius:100px;font-weight:700;font-size:.85rem;letter-spacing:.04em;border:1.5px solid var(--ink);transition:.28s var(--ease);white-space:nowrap}
+.btn svg{width:17px;height:17px;flex-shrink:0}
+.btn-ink{background:var(--ink);color:var(--paper)}
+.btn-ink:hover{background:var(--rust);border-color:var(--rust);transform:translateY(-2px)}
+.btn-ghost:hover{background:var(--ink);color:var(--paper)}
+.btn-wa{background:#1FAF57;border-color:#1FAF57;color:#fff}
+.btn-wa:hover{background:#148a43;border-color:#148a43;transform:translateY(-2px)}
+.btn-light{border-color:var(--paper);color:var(--paper)}
+.btn-light:hover{background:var(--paper);color:var(--ink)}
+
+/* ============ HERO ============ */
+.hero{position:relative;padding:clamp(40px,6vh,72px) 0 0;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.06fr .94fr;gap:clamp(28px,5vw,70px);align-items:center}
+.kick{font-family:var(--fm);font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:var(--rust);display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.kick::before{content:"";width:34px;height:1px;background:var(--rust)}
+.hero h1{font-size:clamp(2.7rem,6.2vw,5.2rem);font-weight:640}
+.hero h1 .lm-l{display:block;overflow:hidden;padding-bottom:.08em;margin-bottom:-.08em}
+.hero h1 i{display:inline-block;font-style:normal;transform:translateY(115%);transition:transform 1s var(--ease)}
+.hero h1 .lm-l:nth-child(2) i{transition-delay:.12s}
+.hero h1 .lm-l:nth-child(3) i{transition-delay:.24s}
+.hero h1.in i{transform:none}
+.hero h1 em{color:var(--rust);font-weight:500}
+.hero-sub{max-width:52ch;margin:26px 0 32px;color:var(--ink2);font-size:1.02rem}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+.hero-meta{display:flex;gap:clamp(20px,4vw,48px);margin-top:clamp(34px,5vh,54px);padding-top:26px;border-top:1px solid var(--line-s);flex-wrap:wrap}
+.hero-meta div b{font-family:var(--fd);font-size:1.45rem;font-weight:600;display:block}
+.hero-meta div span{font-family:var(--fm);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.hero-vis{position:relative;min-height:520px}
+.hv-main{position:relative;width:min(430px,88%);margin-left:auto;border-radius:200px 200px 10px 10px;overflow:hidden;box-shadow:var(--sh)}
+.hv-main img{width:100%;height:100%;object-fit:cover}
+.kb img{animation:kb 16s ease-in-out infinite alternate}
+@keyframes kb{from{transform:scale(1)}to{transform:scale(1.08) translate(1.5%,-1.2%)}}
+.hv-card{position:absolute;left:-8px;bottom:34px;width:180px;background:#fff;padding:10px 10px 14px;box-shadow:var(--sh);transform:rotate(-5deg);transition:transform .4s var(--ease)}
+.hv-card:hover{transform:rotate(-1deg) scale(1.03)}
+.hv-card figcaption{font-family:var(--fm);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;margin-top:8px;color:var(--ink2);text-align:center}
+.stamp{position:absolute;top:-14px;left:8%;width:128px;height:128px;animation:spin 16s linear infinite}
+.stamp text{font-family:var(--fm);font-size:11.5px;letter-spacing:.22em;fill:var(--ink)}
+.stamp .dot{fill:var(--rust)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero-note{position:absolute;right:6%;top:8%;font-family:var(--fd);font-style:italic;font-size:1rem;color:var(--ink2);transform:rotate(3deg)}
+.marquee-big{margin-top:clamp(36px,6vh,64px);border-top:1px solid var(--line-s);border-bottom:1px solid var(--line-s);overflow:hidden}
+.mb-track{display:flex;width:max-content;animation:slide 40s linear infinite}
+.mb-track span{font-family:var(--fd);font-size:clamp(2.6rem,7vw,5.4rem);font-weight:640;padding:.06em .35em;white-space:nowrap;color:transparent;-webkit-text-stroke:1.4px var(--ink)}
+.mb-track span i{font-style:italic;color:var(--rust);-webkit-text-stroke:0}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.rv.in{opacity:1;transform:none}
+
+/* ============ SECTION HEADS ============ */
+.sec{padding:clamp(70px,10vh,110px) 0}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:clamp(30px,5vh,52px);flex-wrap:wrap}
+.sec-head h2{font-size:clamp(1.9rem,4.4vw,3.1rem)}
+.sec-head h2 em{color:var(--rust)}
+.sec-no{font-family:var(--fm);font-size:.72rem;letter-spacing:.24em;color:var(--mut);text-transform:uppercase;display:flex;align-items:center;gap:12px}
+.sec-no b{color:var(--rust);font-weight:500}
+
+/* ============ KATEGORI ============ */
+.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,3vw,32px)}
+.cat-card{position:relative;overflow:hidden;border-radius:14px;aspect-ratio:4/4.6;cursor:pointer;border:1px solid var(--line-s)}
+.cat-card img{width:100%;height:100%;object-fit:cover;transition:transform 1.1s var(--ease)}
+.cat-card:hover img{transform:scale(1.06)}
+.cat-card::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(30,24,14,.78) 0%,rgba(30,24,14,0) 55%)}
+.cat-info{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:clamp(20px,3vw,34px);color:var(--paper);display:flex;justify-content:space-between;align-items:flex-end;gap:16px}
+.cat-info h3{font-size:clamp(1.7rem,3.4vw,2.5rem);font-weight:600}
+.cat-info p{font-size:.86rem;color:rgba(244,237,225,.82);max-width:34ch;margin-top:6px}
+.cat-tag{font-family:var(--fm);font-size:.64rem;letter-spacing:.18em;border:1px solid rgba(244,237,225,.55);padding:.55em 1em;border-radius:40px;white-space:nowrap;transition:.3s}
+.cat-card:hover .cat-tag{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.cat-arrow{position:absolute;top:20px;right:20px;z-index:2;width:46px;height:46px;border-radius:50%;background:var(--paper);display:grid;place-items:center;transform:translate(0,-8px);opacity:0;transition:.35s var(--ease)}
+.cat-card:hover .cat-arrow{opacity:1;transform:none}
+.cat-arrow svg{width:18px;height:18px}
+
+/* ============ KATALOG ============ */
+#koleksi{background:var(--paper2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:34px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font-family:var(--fm);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;padding:.65em 1.25em;border:1.5px solid var(--line-s);border-radius:40px;transition:.25s;color:var(--ink2)}
+.chip:hover{border-color:var(--ink);color:var(--ink)}
+.chip.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.tools-r{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.search{position:relative}
+.search input{font-family:var(--fm);font-size:.78rem;background:transparent;border:1.5px solid var(--line-s);border-radius:40px;padding:.7em 1.2em .7em 2.5em;width:210px;color:var(--ink);transition:.25s}
+.search input:focus{outline:none;border-color:var(--rust);width:250px}
+.search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:15px;height:15px;opacity:.55}
+.sel{position:relative}
+.sel select{appearance:none;font-family:var(--fm);font-size:.75rem;letter-spacing:.06em;border:1.5px solid var(--line-s);background:transparent;border-radius:40px;padding:.75em 2.6em .75em 1.2em;color:var(--ink);cursor:pointer}
+.sel::after{content:"↓";position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:.7rem;pointer-events:none}
+.result-n{font-family:var(--fm);font-size:.7rem;letter-spacing:.16em;color:var(--mut);margin-bottom:20px;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:clamp(16px,2.4vw,26px)}
+.p-card{background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:transform .4s var(--ease),box-shadow .4s var(--ease)}
+.p-card:hover{transform:translateY(-7px);box-shadow:0 26px 44px -24px rgba(34,28,19,.4)}
+.p-img{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--paper3)}
+.p-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .6s,transform 1s var(--ease)}
+.p-img .alt{opacity:0}
+.p-card:hover .p-img img{transform:scale(1.05)}
+.p-card:hover .alt{opacity:1}
+.badge{position:absolute;top:12px;left:12px;z-index:2;font-family:var(--fm);font-size:.6rem;letter-spacing:.18em;padding:.5em .9em;border-radius:4px;text-transform:uppercase}
+.b-best{background:var(--rust);color:#fff}
+.b-new{background:var(--ink);color:var(--paper)}
+.b-lim{background:transparent;border:1.5px solid var(--paper);color:#fff;backdrop-filter:blur(3px)}
+.b-promo{background:var(--moss);color:#fff}
+.p-buy{position:absolute;left:12px;right:12px;bottom:12px;z-index:2;background:var(--ink);color:var(--paper);font-family:var(--fm);font-size:.7rem;letter-spacing:.14em;padding:.9em;border-radius:8px;display:flex;align-items:center;justify-content:center;gap:9px;opacity:0;transform:translateY(10px);transition:.35s var(--ease)}
+.p-buy svg{width:15px;height:15px}
+.p-card:hover .p-buy{opacity:1;transform:none}
+.p-buy:hover{background:var(--rust)}
+.p-body{padding:16px 16px 18px;display:flex;flex-direction:column;flex:1}
+.p-top{display:flex;justify-content:space-between;gap:10px;align-items:baseline;margin-bottom:5px}
+.p-cat{font-family:var(--fm);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+.p-pop{font-family:var(--fm);font-size:.62rem;color:var(--gold);white-space:nowrap}
+.p-body h3{font-size:1.12rem;font-weight:600;margin-bottom:12px}
+.p-foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.p-price{font-family:var(--fm);font-size:.92rem;font-weight:600;display:flex;flex-direction:column;line-height:1.25}
+.p-price s{font-size:.7rem;color:var(--mut);font-weight:400}
+.add-btn{width:42px;height:42px;border:1.5px solid var(--ink);border-radius:50%;font-size:1.25rem;line-height:1;display:grid;place-items:center;transition:.25s;flex-shrink:0}
+.add-btn:hover{background:var(--rust);border-color:var(--rust);color:#fff;transform:rotate(90deg)}
+.empty{display:none;text-align:center;padding:70px 20px;font-family:var(--fm);color:var(--mut)}
+.empty.show{display:block}
+
+/* ============ LOOKBOOK ============ */
+.lb-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(14px,2vw,26px)}
+.lb-grid figure{position:relative;background:#fff;padding:10px 10px 40px;box-shadow:var(--sh);transition:transform .5s var(--ease)}
+.lb-grid figure::before{content:"";position:absolute;top:-13px;left:50%;width:76px;height:24px;background:rgba(200,155,60,.42);transform:translateX(-50%) rotate(-2deg)}
+.lb-grid figcaption{position:absolute;bottom:11px;left:12px;right:12px;display:flex;justify-content:space-between;font-family:var(--fm);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)}
+.lb-grid figure:hover{transform:rotate(0deg) scale(1.03)!important;z-index:5}
+.lb1{grid-column:1/5;transform:rotate(-2.5deg)}
+.lb2{grid-column:5/9;transform:rotate(1.8deg) translateY(34px)}
+.lb3{grid-column:9/13;transform:rotate(-1.6deg)}
+.lb4{grid-column:2/7;transform:rotate(2deg) translateY(-14px)}
+.lb5{grid-column:7/12;transform:rotate(-2.2deg) translateY(20px)}
+.lb-cta{grid-column:1/-1;text-align:center;margin-top:56px}
+.lb-cta p{font-family:var(--fd);font-style:italic;font-size:1.15rem;color:var(--ink2);margin-bottom:18px}
+
+/* ============ TENTANG ============ */
+#tentang{background:var(--paper2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.about-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(34px,6vw,90px);align-items:start}
+.about-stick{position:sticky;top:110px}
+.about-stick h2{font-size:clamp(1.9rem,4vw,3rem);margin-bottom:20px}
+.about-stick h2 em{color:var(--rust)}
+.about-stick p{color:var(--ink2);max-width:46ch;margin-bottom:14px}
+.about-img{margin-top:30px;border-radius:12px;overflow:hidden;max-width:420px;box-shadow:var(--sh)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:34px}
+.stat{background:var(--paper);padding:26px 24px}
+.stat b{font-family:var(--fd);font-size:clamp(1.9rem,3.4vw,2.6rem);font-weight:640;display:flex;align-items:baseline;gap:2px}
+.stat b i{font-style:normal;color:var(--rust);font-size:.7em}
+.stat span{font-family:var(--fm);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
+.val{display:grid;grid-template-columns:auto 1fr;gap:20px;padding:26px 0;border-top:1px solid var(--line-s)}
+.val:last-child{border-bottom:1px solid var(--line-s)}
+.val-no{font-family:var(--fm);color:var(--rust);font-size:.8rem;letter-spacing:.1em;padding-top:5px}
+.val h3{font-size:1.25rem;margin-bottom:6px}
+.val p{color:var(--ink2);font-size:.94rem;max-width:52ch}
+
+/* ============ CARA ORDER ============ */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:clamp(36px,6vh,54px)}
+.step{border:1px solid var(--line-s);border-radius:12px;padding:26px 22px 30px;position:relative;transition:.35s var(--ease);background:var(--paper)}
+.step:hover{background:var(--ink);color:var(--paper);transform:translateY(-6px)}
+.step:hover p{color:rgba(244,237,225,.75)}
+.step:hover .st-no{color:var(--gold)}
+.st-no{font-family:var(--fd);font-style:italic;font-size:2.6rem;color:var(--rust);display:block;margin-bottom:14px;line-height:1}
+.step h3{font-size:1.15rem;margin-bottom:8px}
+.step p{font-size:.88rem;color:var(--ink2);transition:.3s}
+.cta-panel{background:var(--ink);color:var(--paper);border-radius:18px;padding:clamp(34px,5vw,60px);display:flex;justify-content:space-between;align-items:center;gap:28px;flex-wrap:wrap;position:relative;overflow:hidden}
+.cta-panel::after{content:"WA";position:absolute;right:-30px;bottom:-90px;font-family:var(--fd);font-style:italic;font-size:17rem;color:rgba(244,237,225,.05);pointer-events:none}
+.cta-panel h3{font-size:clamp(1.5rem,3.2vw,2.3rem);max-width:20ch}
+.cta-panel h3 em{color:var(--gold)}
+.cta-panel .mono{font-size:.74rem;letter-spacing:.14em;color:rgba(244,237,225,.65);margin-top:10px;display:block}
+
+/* ============ TESTIMONI ============ */
+#testimoni{overflow:hidden}
+.t-track{display:flex;width:max-content;gap:20px;padding:6px 0;animation:slide 46s linear infinite}
+.t-row:hover .t-track{animation-play-state:paused}
+.t-row.rev .t-track{animation-direction:reverse;animation-duration:52s}
+.t-row+.t-row{margin-top:20px}
+.t-card{width:350px;flex-shrink:0;background:var(--paper2);border:1px solid var(--line);border-radius:12px;padding:24px;transition:.3s}
+.t-card:hover{border-color:var(--rust);transform:translateY(-4px)}
+.t-stars{color:var(--gold);letter-spacing:3px;font-size:.85rem;margin-bottom:12px}
+.t-card p{font-size:.92rem;color:var(--ink2);margin-bottom:18px}
+.t-who{display:flex;align-items:center;gap:12px}
+.t-who img{width:40px;height:40px;border-radius:50%;object-fit:cover}
+.t-who b{font-size:.88rem;display:block;line-height:1.2}
+.t-who span{font-family:var(--fm);font-size:.64rem;letter-spacing:.12em;color:var(--mut);text-transform:uppercase}
+
+/* ============ FAQ ============ */
+.faq-wrap{max-width:780px;margin:0 auto}
+.faq-item{border-bottom:1px solid var(--line-s)}
+.faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;gap:20px;text-align:left;padding:24px 4px;font-family:var(--fd);font-size:clamp(1.05rem,2vw,1.3rem);font-weight:600;transition:color .25s}
+.faq-q:hover{color:var(--rust)}
+.faq-q .ic{width:34px;height:34px;border:1.5px solid var(--line-s);border-radius:50%;display:grid;place-items:center;font-family:var(--fb);font-size:1.1rem;flex-shrink:0;transition:.35s var(--ease)}
+.faq-item.open .ic{background:var(--rust);border-color:var(--rust);color:#fff;transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .5s var(--ease)}
+.faq-a p{padding:0 44px 26px 4px;color:var(--ink2);font-size:.95rem;max-width:64ch}
+
+/* ============ CTA BAND ============ */
+.band{background:var(--ink);color:var(--paper);padding:clamp(70px,11vh,120px) 0;text-align:center;position:relative;overflow:hidden}
+.band h2{font-size:clamp(2.3rem,6.5vw,4.8rem);font-weight:640;line-height:1.04}
+.band h2 em{color:var(--gold)}
+.band p{font-family:var(--fm);font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(244,237,225,.6);margin:22px 0 34px}
+.band .btn-wa{font-size:1rem;padding:1.15em 2.2em}
+
+/* ============ FOOTER ============ */
+footer{background:var(--paper2);border-top:1px solid var(--line)}
+.f-top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.1fr;gap:clamp(24px,4vw,56px);padding:clamp(50px,8vh,80px) 0 46px}
+.f-brand .logo{margin-bottom:16px}
+.f-brand p{color:var(--ink2);font-size:.9rem;max-width:32ch}
+.f-col h4{font-family:var(--fm);font-size:.68rem;letter-spacing:.24em;text-transform:uppercase;color:var(--rust);margin-bottom:18px;font-weight:500}
+.f-col a,.f-col li{display:block;padding:5px 0;color:var(--ink2);font-size:.92rem;list-style:none;transition:.2s}
+.f-col a:hover{color:var(--rust);transform:translateX(4px)}
+.f-wa{display:inline-flex;align-items:center;gap:10px;margin-top:14px;background:#1FAF57;color:#fff;padding:.8em 1.4em;border-radius:40px;font-weight:700;font-size:.84rem;transition:.25s}
+.f-wa:hover{transform:translateY(-2px);box-shadow:0 12px 24px -10px rgba(31,175,87,.6)}
+.f-wa svg{width:16px;height:16px}
+.f-bot{border-top:1px solid var(--line);padding:22px 0;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-family:var(--fm);font-size:.68rem;letter-spacing:.1em;color:var(--mut)}
+
+/* ============ FAB / DRAWER / TOAST ============ */
+.fab{position:fixed;right:22px;bottom:22px;z-index:300;width:60px;height:60px;border-radius:50%;background:#1FAF57;color:#fff;display:grid;place-items:center;box-shadow:0 14px 30px -10px rgba(31,175,87,.65);transition:.3s}
+.fab:hover{transform:scale(1.1)}
+.fab::before{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid #1FAF57;animation:pulse 2.2s ease-out infinite}
+@keyframes pulse{from{transform:scale(1);opacity:.8}to{transform:scale(1.7);opacity:0}}
+.fab svg{width:28px;height:28px}
+.ov{position:fixed;inset:0;background:rgba(24,19,12,.55);z-index:500;opacity:0;pointer-events:none;transition:opacity .35s}
+.ov.show{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(430px,100%);background:var(--paper);z-index:510;transform:translateX(105%);transition:transform .5s var(--ease);display:flex;flex-direction:column;box-shadow:-20px 0 60px rgba(0,0,0,.25)}
+.drawer.open{transform:none}
+.dw-head{display:flex;justify-content:space-between;align-items:center;padding:22px 26px;border-bottom:1px solid var(--line)}
+.dw-head h3{font-size:1.4rem}
+.dw-head span{font-family:var(--fm);font-size:.68rem;color:var(--mut);letter-spacing:.14em}
+.dw-x{width:38px;height:38px;border:1.5px solid var(--line-s);border-radius:50%;font-size:1rem;transition:.25s}
+.dw-x:hover{background:var(--ink);color:var(--paper);transform:rotate(90deg)}
+.dw-body{flex:1;overflow-y:auto;padding:18px 26px}
+.dw-empty{text-align:center;padding:60px 20px;color:var(--mut)}
+.dw-empty .big{font-size:2.6rem;display:block;margin-bottom:12px}
+.c-item{display:grid;grid-template-columns:64px 1fr auto;gap:14px;padding:16px 0;border-bottom:1px solid var(--line);align-items:center}
+.c-item img{width:64px;height:80px;object-fit:cover;border-radius:8px}
+.c-item h4{font-size:.95rem;font-family:var(--fd);font-weight:600}
+.c-price{font-family:var(--fm);font-size:.78rem;color:var(--rust);margin:3px 0 8px}
+.qty{display:inline-flex;align-items:center;border:1.5px solid var(--line-s);border-radius:30px}
+.qty button{width:28px;height:28px;font-size:1rem;transition:.2s}
+.qty button:hover{color:var(--rust)}
+.qty span{font-family:var(--fm);font-size:.78rem;min-width:26px;text-align:center}
+.c-rm{font-family:var(--fm);font-size:.62rem;letter-spacing:.14em;color:var(--mut);text-transform:uppercase;transition:.2s;align-self:start;padding-top:4px}
+.c-rm:hover{color:var(--rust)}
+.dw-foot{border-top:1px solid var(--line);padding:20px 26px 24px;background:var(--paper2)}
+.promo{font-family:var(--fm);font-size:.68rem;letter-spacing:.08em;background:var(--paper3);border:1px dashed var(--line-s);border-radius:8px;padding:10px 14px;margin-bottom:16px;color:var(--ink2)}
+.promo b{color:var(--rust)}
+.dw-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px}
+.dw-row span{font-family:var(--fm);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--mut)}
+.dw-row b{font-family:var(--fd);font-size:1.5rem}
+.dw-foot .btn{width:100%;justify-content:center}
+
+.toast-wrap{position:fixed;left:22px;bottom:22px;z-index:600;display:flex;flex-direction:column;gap:10px}
+.toast{background:var(--ink);color:var(--paper);font-family:var(--fm);font-size:.74rem;letter-spacing:.08em;padding:.9em 1.4em;border-radius:8px;border-left:3px solid var(--rust);animation:tin .45s var(--ease);box-shadow:var(--sh)}
+.toast.out{opacity:0;transform:translateY(10px);transition:.4s}
+@keyframes tin{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:1000px){
+  .steps{grid-template-columns:1fr 1fr}
+  .f-top{grid-template-columns:1fr 1fr}
+  .about-grid{grid-template-columns:1fr}
+  .about-stick{position:static}
+}
+@media(max-width:860px){
+  .nav{display:none}
+  .burger{display:flex}
+  .hero-grid{grid-template-columns:1fr}
+  .hero-vis{min-height:0;margin-top:10px}
+  .hv-main{margin:0 auto}
+  .stamp{left:auto;right:-6px;top:-20px}
+  .hero-note{display:none}
+  .cat-grid{grid-template-columns:1fr}
+  .lb-grid{grid-template-columns:1fr 1fr;gap:34px 16px}
+  .lb1{grid-column:1/2}.lb2{grid-column:2/3;transform:rotate(2deg)}.lb3{grid-column:1/2}.lb4{grid-column:2/3;transform:rotate(-2deg)}.lb5{grid-column:1/3}
+}
+@media(max-width:600px){
+  .steps{grid-template-columns:1fr}
+  .f-top{grid-template-columns:1fr}
+  .toolbar{align-items:stretch;flex-direction:column}
+  .search input{width:100%}.search{flex:1}.tools-r{width:100%}
+  .hv-card{width:140px;left:0}
+  .stats{grid-template-columns:1fr 1fr}
+}
+
+/* ============ REDUCED MOTION ============ */
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .rv,.hero h1 i{opacity:1!important;transform:none!important}
+}
+</style>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<!-- TICKER -->
+<div class="tk" aria-hidden="true">
+  <div class="tk-track" id="tkTop"></div>
+</div>
+
+<!-- HEADER -->
+<header class="hdr" id="hdr">
+  <div class="wrap hdr-in">
+    <a href="#" class="logo" aria-label="ELISA STORE beranda"><span>Elisa<em>.</em></span><small>STORE · EST 2021</small></a>
+    <nav class="nav" aria-label="Navigasi utama">
+      <a href="#kategori">Kategori</a>
+      <a href="#koleksi">Koleksi</a>
+      <a href="#lookbook">Lookbook</a>
+      <a href="#tentang">Tentang</a>
+      <a href="#cara-order">Cara Order</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="hdr-act">
+      <button class="cart-btn" data-cart-open aria-label="Buka keranjang belanja">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 7h12l1.5 13h-15L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+        <span class="cart-n" id="cartN">0</span>
+      </button>
+      <button class="burger" id="burger" aria-label="Buka menu"><b></b><b></b><b></b></button>
+    </div>
+  </div>
+</header>
+
+<!-- MOBILE MENU -->
+<div class="m-menu" id="mMenu">
+  <div class="m-top">
+    <span class="logo" style="color:var(--paper)">Elisa<small style="color:var(--gold)">STORE</small></span>
+    <button class="m-close" id="mClose">TUTUP ✕</button>
+  </div>
+  <nav class="m-links">
+    <a href="#kategori">Kategori <small>01</small></a>
+    <a href="#koleksi">Koleksi <small>02</small></a>
+    <a href="#lookbook">Lookbook <small>03</small></a>
+    <a href="#tentang">Tentang <small>04</small></a>
+    <a href="#cara-order">Cara Order <small>05</small></a>
+    <a href="#faq">FAQ <small>06</small></a>
+  </nav>
+  <a class="btn btn-wa m-wa" href="#" data-wa-default>
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.2 1.2-1.7 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.6-.5.5c-.2.2-.3.4-.1.7.2.3.9 1.5 2 2.4 1.4 1.2 2.5 1.6 2.9 1.7.3.2.5.1.7-.1l.9-1c.2-.3.4-.2.7-.1l2.1 1c.3.2.5.3.6.4.1.2.1.8-.4 1.4z"/></svg>
+    Chat Admin Sekarang
+  </a>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="kick scr" data-text="BUTIK ONLINE — PAKAIAN & AKSESORI">BUTIK ONLINE — PAKAIAN & AKSESORI</p>
+      <h1 class="lm" id="heroH1">
+        <span class="lm-l"><i>Tampil memikat,</i></span>
+        <span class="lm-l"><i><em>tanpa</em> bikin kantong</i></span>
+        <span class="lm-l"><i>menjerit.</i></span>
+      </h1>
+      <p class="hero-sub">ELISA STORE mengkurasi pakaian & aksesori pilihan — kualitas butik, harga bersahabat. Pilih produk favoritmu, checkout-nya langsung lewat WhatsApp. Segampang itu.</p>
+      <div class="hero-cta">
+        <a href="#koleksi" class="btn btn-ink">Belanja Koleksi <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16m0 0 6-6m-6 6-6-6"/></svg></a>
+        <a href="#" class="btn btn-wa" data-wa-default>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.2 1.2-1.7 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.6-.5.5c-.2.2-.3.4-.1.7.2.3.9 1.5 2 2.4 1.4 1.2 2.5 1.6 2.9 1.7.3.2.5.1.7-.1l.9-1c.2-.3.4-.2.7-.1l2.1 1c.3.2.5.3.6.4.1.2.1.8-.4 1.4z"/></svg>
+          Chat WhatsApp
+        </a>
+      </div>
+      <div class="hero-meta">
+        <div><b>2.400+</b><span>Pesanan terkirim</span></div>
+        <div><b>4,9<i style="color:var(--gold)">★</i></b><span>Rating pelanggan</span></div>
+        <div><b>98%</b><span>Order berulang</span></div>
+      </div>
+    </div>
+    <div class="hero-vis">
+      <div class="hv-main kb">
+        <img src="https://picsum.photos/seed/elisa-hero-model/700/880" alt="Model mengenakan koleksi terbaru ELISA STORE" width="700" height="880">
+      </div>
+      <figure class="hv-card">
+        <img src="https://picsum.photos/seed/elisa-hero-detail/400/440" alt="Detail aksesori ELISA STORE" width="400" height="440">
+        <figcaption>Drop Okt '26 ✦</figcaption>
+      </figure>
+      <svg class="stamp" viewBox="0 0 128 128" aria-hidden="true">
+        <defs><path id="cir" d="M64,64 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/></defs>
+        <circle cx="64" cy="64" r="26" fill="var(--paper2)" stroke="var(--line-s)"/>
+        <circle class="dot" cx="64" cy="64" r="4"/>
+        <text><textPath href="#cir">ORDER VIA WHATSAPP • ELISA STORE • </textPath></text>
+      </svg>
+      <p class="hero-note">stok terbatas setiap drop —<br>cepatan order, ya! ↗</p>
+    </div>
+  </div>
+  <div class="marquee-big" aria-hidden="true">
+    <div class="mb-track" id="mbTrack"></div>
+  </div>
+</section>
+
+<!-- ============ KATEGORI ============ -->
+<section class="sec" id="kategori">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div>
+        <p class="sec-no"><b>(01)</b> Jelajahi Kategori</p>
+        <h2>Pilih <em>duniamu</em></h2>
+      </div>
+      <p style="max-width:36ch;color:var(--ink2);font-size:.94rem">Dua lini produk, satu standar kualitas: bahan nyaman, jahitan rapi, harga masuk akal.</p>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-card rv" data-goto-cat="pakaian" role="button" tabindex="0" aria-label="Lihat kategori pakaian">
+        <img src="https://picsum.photos/seed/elisa-category-pakaian/820/960" alt="Koleksi pakaian wanita ELISA STORE">
+        <span class="cat-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+        <div class="cat-info">
+          <div><h3>Pakaian</h3><p>Blouse, dress, outer, rok & kulot — dari santai sampai semi-formal.</p></div>
+          <span class="cat-tag" id="nPakaian">— ITEM</span>
+        </div>
+      </div>
+      <div class="cat-card rv" data-goto-cat="aksesoris" role="button" tabindex="0" aria-label="Lihat kategori aksesori" style="transition-delay:.1s">
+        <img src="https://picsum.photos/seed/elisa-category-aksesoris/820/960" alt="Koleksi aksesori ELISA STORE">
+        <span class="cat-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+        <div class="cat-info">
+          <div><h3>Aksesoris</h3><p>Tas, kalung, anting, scarf — sentuhan akhir biar look-mu makin lengkap.</p></div>
+          <span class="cat-tag" id="nAksesoris">— ITEM</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ KATALOG ============ -->
+<section class="sec" id="koleksi">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div>
+        <p class="sec-no"><b>(02)</b> Katalog Produk</p>
+        <h2>Koleksi <em>pilihan</em> minggu ini</h2>
+      </div>
+      <p style="max-width:34ch;color:var(--ink2);font-size:.94rem">Tekan <b>+</b> untuk masuk keranjang, atau langsung pesan satuan via WhatsApp.</p>
+    </div>
+    <div class="toolbar rv">
+      <div class="chips" id="chips">
+        <button class="chip on" data-f="semua">Semua</button>
+        <button class="chip" data-f="pakaian">Pakaian</button>
+        <button class="chip" data-f="aksesoris">Aksesoris</button>
+        <button class="chip" data-f="promo">🏷 Promo</button>
+      </div>
+      <div class="tools-r">
+        <div class="search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input type="search" id="q" placeholder="Cari produk…" aria-label="Cari produk">
+        </div>
+        <div class="sel">
+          <select id="sort" aria-label="Urutkan produk">
+            <option value="featured">Unggulan</option>
+            <option value="new">Terbaru</option>
+            <option value="asc">Harga Terendah</option>
+            <option value="desc">Harga Tertinggi</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <p class="result-n" id="resultN"></p>
+    <div class="grid" id="grid"></div>
+    <div class="empty" id="empty">— Tidak ada produk yang cocok. Coba kata kunci lain ✦ —</div>
+  </div>
+</section>
+
+<!-- ============ LOOKBOOK ============ -->
+<section class="sec" id="lookbook">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div>
+        <p class="sec-no"><b>(03)</b> Lookbook</p>
+        <h2>Diary gaya <em>Oktober '26</em></h2>
+      </div>
+      <p style="max-width:36ch;color:var(--ink2);font-size:.94rem">Potret koleksi dipakai sehari-hari — dari ngopi sore sampai acara kantor.</p>
+    </div>
+    <div class="lb-grid">
+      <figure class="lb1 rv"><div class="kb" style="overflow:hidden"><img src="https://picsum.photos/seed/elisa-look-street/620/760" alt="Lookbook gaya street style"></div><figcaption><span>Look 01</span><span>Kota Tua</span></figcaption></figure>
+      <figure class="lb2 rv" style="transition-delay:.08s"><div class="kb" style="overflow:hidden"><img src="https://picsum.photos/seed/elisa-look-cafe/620/760" alt="Lookbook gaya kasual di kafe"></div><figcaption><span>Look 02</span><span>Brunch</span></figcaption></figure>
+      <figure class="lb3 rv" style="transition-delay:.16s"><div class="kb" style="overflow:hidden"><img src="https://picsum.photos/seed/elisa-look-office/620/760" alt="Lookbook gaya semi-formal"></div><figcaption><span>Look 03</span><span>Office-ready</span></figcaption></figure>
+      <figure class="lb4 rv"><div class="kb" style="overflow:hidden"><img src="https://picsum.photos/seed/elisa-look-picnic/760/560" alt="Lookbook gaya santai akhir pekan"></div><figcaption><span>Look 04</span><span>Weekend</span></figcaption></figure>
+      <figure class="lb5 rv" style="transition-delay:.08s"><div class="kb" style="overflow:hidden"><img src="https://picsum.photos/seed/elisa-look-evening/760/560" alt="Lookbook gaya malam hari"></div><figcaption><span>Look 05</span><span>After-dark</span></figcaption></figure>
+      <div class="lb-cta rv">
+        <p>"Suka look yang mana? Screenshot, kirim ke admin — kami bantu padu-padankan."</p>
+        <a href="#" class="btn btn-ink" data-wa-msg="Halo ELISA STORE! Aku suka look di website, boleh dibantu padu-padankan? 😊">Konsultasi Gaya Gratis
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m0 0-6-6m6 6-6 6"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TENTANG ============ -->
+<section class="sec" id="tentang">
+  <div class="wrap about-grid">
+    <div class="about-stick rv">
+      <p class="sec-no"><b>(04)</b> Tentang Kami</p>
+      <h2>Butik kecil, <em>standar</em> besar.</h2>
+      <p>ELISA STORE berdiri tahun 2021 dari satu kamar kecil dan satu keyakinan: semua orang berhak tampil bagus tanpa harus menguras tabungan.</p>
+      <p>Setiap helai kain kami pilih sendiri, setiap foto produk kami potret nyata — bukan gambar curian. Yang kamu lihat, itulah yang kamu terima.</p>
+      <div class="about-img kb">
+        <img src="https://picsum.photos/seed/elisa-store-story/700/860" alt="Suasana di balik layar ELISA STORE">
+      </div>
+    </div>
+    <div>
+      <div class="stats rv">
+        <div class="stat"><b><span class="cnt" data-to="5">0</span><i>thn+</i></b><span>Beroperasi</span></div>
+        <div class="stat"><b><span class="cnt" data-to="12400">0</span><i>+</i></b><span>Pesanan terkirim</span></div>
+        <div class="stat"><b><span class="cnt" data-to="4.9" data-dec="1">0</span><i>★</i></b><span>Rating rata-rata</span></div>
+        <div class="stat"><b><span class="cnt" data-to="98">0</span><i>%</i></b><span>Pelanggan kembali</span></div>
+      </div>
+      <div class="val rv"><span class="val-no">01</span><div><h3>Kurasi Ketat</h3><p>Setiap produk lolos cek bahan, jahitan, dan kesesuaian ukuran sebelum masuk katalog. Gagal satu saja, tidak tayang.</p></div></div>
+      <div class="val rv"><span class="val-no">02</span><div><h3>Respon Kilat</h3><p>Chat dibalas dalam hitungan menit di jam operasional. Tanya ukuran, minta foto detail, atau sekadar ragu — gas aja.</p></div></div>
+      <div class="val rv"><span class="val-no">03</span><div><h3>Kirim se-Indonesia</h3><p>Ekspedisi terpercaya dari Sabang sampai Merauke. Setiap pesanan dapat resi dan update perjalanan paket.</p></div></div>
+      <div class="val rv"><span class="val-no">04</span><div><h3>Aman & Transparan</h3><p>Foto asli, deskripsi jujur, garansi tukar ukuran 3 hari. Belanja online seharusnya setenang ini.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CARA ORDER ============ -->
+<section class="sec" id="cara-order">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div>
+        <p class="sec-no"><b>(05)</b> Cara Order</p>
+        <h2>Empat langkah, <em>beres.</em></h2>
+      </div>
+    </div>
+    <div class="steps">
+      <div class="step rv"><span class="st-no">01</span><h3>Pilih Produk</h3><p>Intip katalog, klik <b>+</b> untuk keranjang atau "Pesan" untuk order langsung.</p></div>
+      <div class="step rv" style="transition-delay:.08s"><span class="st-no">02</span><h3>Cek Keranjang</h3><p>Review pesananmu, atur jumlah — semua tersimpan otomatis di perangkatmu.</p></div>
+      <div class="step rv" style="transition-delay:.16s"><span class="st-no">03</span><h3>Kirim via WhatsApp</h3><p>Daftar pesanan terformat rapi otomatis. Kamu tinggal tekan kirim ke admin.</p></div>
+      <div class="step rv" style="transition-delay:.24s"><span class="st-no">04</span><h3>Bayar & Dikirim</h3><p>Transfer / e-wallet, konfirmasi, dan paket meluncur lengkap dengan resi.</p></div>
+    </div>
+    <div class="cta-panel rv">
+      <div>
+        <h3>Masih ragu? Tanya-tanya dulu, <em>gratis kok.</em></h3>
+        <span class="mono">WA +62 823-8165-6721 · SENIN–SABTU 09.00–21.00 WIB</span>
+      </div>
+      <a href="#" class="btn btn-wa" data-wa-msg="Halo ELISA STORE! Aku mau tanya-tanya dulu sebelum order 😊">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.2 1.2-1.7 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.6-.5.5c-.2.2-.3.4-.1.7.2.3.9 1.5 2 2.4 1.4 1.2 2.5 1.6 2.9 1.7.3.2.5.1.7-.1l.9-1c.2-.3.4-.2.7-.1l2.1 1c.3.2.5.3.6.4.1.2.1.8-.4 1.4z"/></svg>
+        Ngobrol dengan Admin
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONI ============ -->
+<section class="sec" id="testimoni">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div>
+        <p class="sec-no"><b>(06)</b> Testimoni</p>
+        <h2>Kata mereka yang <em>sudah checkout</em></h2>
+      </div>
+    </div>
+  </div>
+  <div class="t-row"><div class="t-track" id="tRow1"></div></div>
+  <div class="t-row rev"><div class="t-track" id="tRow2"></div></div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="sec" id="faq">
+  <div class="wrap">
+    <div class="sec-head rv" style="justify-content:center;text-align:center">
+      <div>
+        <p class="sec-no" style="justify-content:center"><b>(07)</b> FAQ</p>
+        <h2>Sering <em>ditanyakan</em></h2>
+      </div>
+    </div>
+    <div class="faq-wrap rv" id="faqWrap"></div>
+  </div>
+</section>
+
+<!-- ============ CTA BAND ============ -->
+<section class="band">
+  <div class="wrap rv">
+    <h2>Siap tampil <em>memikat</em><br>mulai hari ini?</h2>
+    <p>Order via WhatsApp · Respon cepat · Kirim se-Indonesia</p>
+    <a href="#" class="btn btn-wa" data-wa-default>
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.2 1.2-1.7 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.6-.5.5c-.2.2-.3.4-.1.7.2.3.9 1.5 2 2.4 1.4 1.2 2.5 1.6 2.9 1.7.3.2.5.1.7-.1l.9-1c.2-.3.4-.2.7-.1l2.1 1c.3.2.5.3.6.4.1.2.1.8-.4 1.4z"/></svg>
+      Chat Sekarang — +62 823-8165-6721
+    </a>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="f-top">
+      <div class="f-brand">
+        <span class="logo">Elisa<em>.</em><small>STORE · EST 2021</small></span>
+        <p>Butik online pakaian & aksesori terkurasi. Kualitas butik, harga bersahabat, pelayanan lewat WhatsApp yang kamu kenal.</p>
+        <a href="#" class="f-wa" data-wa-default>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.2 1.2-1.7 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.6-.5.5c-.2.2-.3.4-.1.7.2.3.9 1.5 2 2.4 1.4 1.2 2.5 1.6 2.9 1.7.3.2.5.1.7-.1l.9-1c.2-.3.4-.2.7-.1l2.1 1c.3.2.5.3.6.4.1.2.1.8-.4 1.4z"/></svg>
+          +62 823-8165-6721
+        </a>
+      </div>
+      <div class="f-col">
+        <h4>Jelajah</h4>
+        <a href="#kategori">Kategori</a>
+        <a href="#koleksi">Koleksi</a>
+        <a href="#lookbook">Lookbook</a>
+        <a href="#tentang">Tentang Kami</a>
+        <a href="#cara-order">Cara Order</a>
+      </div>
+      <div class="f-col">
+        <h4>Bantuan</h4>
+        <a href="#faq">FAQ</a>
+        <a href="#" data-wa-msg="Halo, aku mau tanya soal panduan ukuran 🙏">Panduan Ukuran</a>
+        <a href="#" data-wa-msg="Halo, aku mau tanya kebijakan retur 🙏">Retur & Tukar Size</a>
+        <a href="#" data-wa-msg="Halo, aku mau cek status pesanan / resi 📦">Lacak Pesanan</a>
+      </div>
+      <div class="f-col">
+        <h4>Kontak & Jam Layanan</h4>
+        <li>📍 Pengiriman dari Indonesia</li>
+        <li>🕘 Senin–Sabtu · 09.00–21.00 WIB</li>
+        <li>💬 Order tetap 24 jam via WhatsApp</li>
+        <li>📷 Instagram / TikTok · @elisastore</li>
+      </div>
+    </div>
+    <div class="f-bot">
+      <span>© <span id="year"></span> ELISA STORE — SEMUA HAK DILINDUNGI</span>
+      <span>DIBUAT DENGAN ♥ & KOPI ☕</span>
+    </div>
+  </div>
+</footer>
+
+<!-- FAB WA -->
+<a href="#" class="fab" data-wa-default aria-label="Chat WhatsApp ELISA STORE">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.2 1.2-1.7 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.6-.5.5c-.2.2-.3.4-.1.7.2.3.9 1.5 2 2.4 1.4 1.2 2.5 1.6 2.9 1.7.3.2.5.1.7-.1l.9-1c.2-.3.4-.2.7-.1l2.1 1c.3.2.5.3.6.4.1.2.1.8-.4 1.4z"/></svg>
+</a>
+
+<!-- CART DRAWER -->
+<div class="ov" id="ov"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Keranjang belanja">
+  <div class="dw-head">
+    <h3>Keranjang <span id="dwCount">(0 item)</span></h3>
+    <button class="dw-x" data-cart-close aria-label="Tutup keranjang">✕</button>
+  </div>
+  <div class="dw-body" id="dwBody"></div>
+  <div class="dw-foot">
+    <div class="promo">✦ Kode <b>ELISA10</b> — sebutkan saat chat untuk diskon 10% order pertama</div>
+    <div class="dw-row"><span>Subtotal</span><b id="dwTotal">Rp 0</b></div>
+    <button class="btn btn-wa" id="checkoutBtn">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.2 1.2-1.7 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.6-.5.5c-.2.2-.3.4-.1.7.2.3.9 1.5 2 2.4 1.4 1.2 2.5 1.6 2.9 1.7.3.2.5.1.7-.1l.9-1c.2-.3.4-.2.7-.1l2.1 1c.3.2.5.3.6.4.1.2.1.8-.4 1.4z"/></svg>
+      Checkout via WhatsApp →
+    </button>
+  </div>
+</aside>
+
+<div class="toast-wrap" id="toasts"></div>
+
+<script>
+/* ================= KONFIG ================= */
+const WA = '6282381656721';
+const WA_DISPLAY = '+62 823-8165-6721';
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const fmt = n => 'Rp ' + n.toLocaleString('id-ID');
+const waLink = msg => `https://wa.me/${WA}?text=${encodeURIComponent(msg)}`;
+
+/* ================= DATA PRODUK (edit di sini) ================= */
+const PRODUCTS = [
+ {id:'arunika', name:'Blouse Linen “Arunika”', cat:'pakaian',   price:189000, badge:'BEST SELLER', popular:96, seed:'elisa-blouse-arunika'},
+ {id:'kirana',  name:'Dress Midi “Kirana”',    cat:'pakaian',   price:259000, badge:'BARU', isNew:true, popular:88, seed:'elisa-dress-kirana'},
+ {id:'savanna', name:'Kemeja Oversize “Savanna”', cat:'pakaian', price:219000, popular:91, seed:'elisa-kemeja-savanna'},
+ {id:'sandhya', name:'Outer Kimono “Sandhya”', cat:'pakaian',   price:239000, sale:199000, badge:'LIMITED', popular:93, seed:'elisa-outer-sandhya'},
+ {id:'ayudia',  name:'Rok Plisket “Ayudia”',   cat:'pakaian',   price:179000, popular:84, seed:'elisa-rok-ayudia'},
+ {id:'laras',   name:'Kulot High-Waist “Laras”', cat:'pakaian', price:199000, popular:89, seed:'elisa-kulot-laras'},
+ {id:'hana',    name:'Knit Vest “Hana”',       cat:'pakaian',   price:159000, sale:139000, badge:'PROMO', popular:86, seed:'elisa-vest-hana'},
+ {id:'naomi',   name:'Tunik Rajut “Naomi”',    cat:'pakaian',   price:209000, badge:'BARU', isNew:true, popular:82, seed:'elisa-tunik-naomi'},
+ {id:'bali',    name:'Tas Rotan “Bali Weave”', cat:'aksesoris', price:245000, badge:'BEST SELLER', popular:95, seed:'elisa-tas-bali'},
+ {id:'aurora',  name:'Kalung Layer “Aurora”',  cat:'aksesoris', price:89000,  popular:87, seed:'elisa-kalung-aurora'},
+ {id:'gala',    name:'Anting Hoop “Gala Gold”',cat:'aksesoris', price:69000,  popular:85, seed:'elisa-anting-gala'},
+ {id:'terra',   name:'Topi Bucket “Terra”',    cat:'aksesoris', price:99000, sale:79000, badge:'LIMITED', popular:83, seed:'elisa-topi-terra'},
+ {id:'lara',    name:'Scarf Satin “Lara”',     cat:'aksesoris', price:75000,  badge:'BARU', isNew:true, popular:81, seed:'elisa-scarf-lara'},
+ {id:'citra',   name:'Ikat Pinggang “Citra”',  cat:'aksesoris', price:95000,  popular:80, seed:'elisa-belt-citra'},
+];
+const byId = id => PRODUCTS.find(p => p.id === id);
+const priceOf = p => p.sale || p.price;
+
+/* ================= TICKER & MARQUEE ================= */
+const tkItems = ['GRATIS ONGKIR MIN. BELANJA RP250.000','NEW DROP — OKTOBER 2026','ORDER GAMPANG VIA WHATSAPP ' + WA_DISPLAY,'KODE ELISA10 = DISKON 10% ORDER PERTAMA','TUKAR SIZE GRATIS 3 HARI'];
+document.getElementById('tkTop').innerHTML = Array(2).fill(tkItems.map(t=>`<span><i>✦</i>${t}</span>`).join('')).join('');
+const mb = 'PAKAIAN <i>✦</i> AKSESORIS <i>✦</i> ELISA STORE <i>✦</i> ';
+document.getElementById('mbTrack').innerHTML = Array(4).fill(`<span>${mb}</span>`).join('');
+
+/* ================= STATE KATALOG ================= */
+let filter='semua', query='', sortMode='featured';
+const grid=document.getElementById('grid');
+
+function badgeClass(b){return {'BEST SELLER':'b-best','BARU':'b-new','LIMITED':'b-lim','PROMO':'b-promo'}[b]||''}
+
+function renderProducts(){
+  let list = PRODUCTS.filter(p=>{
+    if(filter==='promo' && !p.sale) return false;
+    if(filter!=='semua' && filter!=='promo' && p.cat!==filter) return false;
+    if(query && !p.name.toLowerCase().includes(query)) return false;
+    return true;
+  });
+  if(sortMode==='asc') list.sort((a,b)=>priceOf(a)-priceOf(b));
+  else if(sortMode==='desc') list.sort((a,b)=>priceOf(b)-priceOf(a));
+  else if(sortMode==='new') list.sort((a,b)=>(b.isNew?1:0)-(a.isNew?1:0)||b.popular-a.popular);
+  else list.sort((a,b)=>b.popular-a.popular);
+
+  document.getElementById('resultN').textContent = `Menampilkan ${list.length} dari ${PRODUCTS.length} produk`;
+  document.getElementById('empty').classList.toggle('show', !list.length);
+
+  grid.innerHTML = list.map((p,i)=>`
+    <article class="p-card rv ${REDUCED?'in':''}" style="transition-delay:${Math.min(i*45,360)}ms">
+      <div class="p-img">
+        ${p.badge?`<span class="badge ${badgeClass(p.badge)}">${p.badge}</span>`:''}
+        <img src="https://picsum.photos/seed/${p.seed}/600/750" alt="${p.name}" loading="lazy">
+        <img class="alt" src="https://picsum.photos/seed/${p.seed}-b/600/750" alt="" loading="lazy" aria-hidden="true">
+        <button class="p-buy" data-buy="${p.id}">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.2 1.2-1.7 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.6-.5.5c-.2.2-.3.4-.1.7.2.3.9 1.5 2 2.4 1.4 1.2 2.5 1.6 2.9 1.7.3.2.5.1.7-.1l.9-1c.2-.3.4-.2.7-.1l2.1 1c.3.2.5.3.6.4.1.2.1.8-.4 1.4z"/></svg>
+          PESAN VIA WHATSAPP
+        </button>
+      </div>
+      <div class="p-body">
+        <div class="p-top"><span class="p-cat">${p.cat==='pakaian'?'Pakaian':'Aksesoris'}</span><span class="p-pop">★ ${p.popular}</span></div>
+        <h3>${p.name}</h3>
+        <div class="p-foot">
+          <span class="p-price">${p.sale?`<s>${fmt(p.price)}</s>`:''}${fmt(priceOf(p))}</span>
+          <button class="add-btn" data-add="${p.id}" aria-label="Tambah ${p.name} ke keranjang">+</button>
+        </div>
+      </div>
+    </article>`).join('');
+  observeReveals(grid);
+}
+renderProducts();
+
+document.getElementById('nPakaian').textContent = PRODUCTS.filter(p=>p.cat==='pakaian').length + ' ITEM';
+document.getElementById('nAksesoris').textContent = PRODUCTS.filter(p=>p.cat==='aksesoris').length + ' ITEM';
+
+/* filter chips */
+document.getElementById('chips').addEventListener('click',e=>{
+  const c=e.target.closest('.chip'); if(!c) return;
+  document.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));
+  c.classList.add('on'); filter=c.dataset.f; renderProducts();
+});
+document.getElementById('q').addEventListener('input',e=>{query=e.target.value.trim().toLowerCase();renderProducts()});
+document.getElementById('sort').addEventListener('change',e=>{sortMode=e.target.value;renderProducts()});
+document.querySelectorAll('[data-goto-cat]').forEach(el=>{
+  const go=()=>{filter=el.dataset.gotoCat;query='';document.getElementById('q').value='';
+    document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x.dataset.f===filter));
+    renderProducts();document.getElementById('koleksi').scrollIntoView({behavior:REDUCED?'auto':'smooth'})};
+  el.addEventListener('click',go);
+  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}});
+});
+
+/* event delegation grid */
+grid.addEventListener('click',e=>{
+  const add=e.target.closest('[data-add]'); if(add){addToCart(add.dataset.add);return}
+  const buy=e.target.closest('[data-buy]'); if(buy){buySingle(byId(buy.dataset.buy))}
+});
+function buySingle(p){
+  location.href = waLink(`Halo ELISA STORE! 👋\nAku mau pesan:\n\n• ${p.name} — ${fmt(priceOf(p))}\n\nMasih ready kah? Terima kasih 🙏`);
+}
+
+/* ================= KERANJANG ================= */
+let cart = {};
+try{ cart = JSON.parse(localStorage.getItem('elisa-cart')||'{}') }catch(e){ cart = {} }
+const saveCart = ()=> localStorage.setItem('elisa-cart', JSON.stringify(cart));
+const cartCount = ()=> Object.values(cart).reduce((a,b)=>a+b,0);
+const cartTotal = ()=> Object.entries(cart).reduce((s,[id,q])=>s+priceOf(byId(id))*q,0);
+
+function addToCart(id){
+  cart[id]=(cart[id]||0)+1; saveCart(); syncCart();
+  toast(`✓ ${byId(id).name} masuk keranjang`);
+}
+function setQty(id,q){ if(q<=0) delete cart[id]; else cart[id]=q; saveCart(); syncCart(); }
+
+function syncCart(){
+  document.getElementById('cartN').textContent = cartCount();
+  document.getElementById('dwCount').textContent = `(${cartCount()} item)`;
+  document.getElementById('dwTotal').textContent = fmt(cartTotal());
+  const body=document.getElementById('dwBody');
+  if(!cartCount()){
+    body.innerHTML = `<div class="dw-empty"><span class="big">🛍</span>Keranjangmu masih kosong.<br>Yuk mulai pilih-pilih ✦<br><br><button class="btn btn-ink" data-cart-close>Lihat Koleksi</button></div>`;
+    return;
+  }
+  body.innerHTML = Object.entries(cart).map(([id,q])=>{
+    const p=byId(id);
+    return `<div class="c-item">
+      <img src="https://picsum.photos/seed/${p.seed}/200/260" alt="${p.name}">
+      <div>
+        <h4>${p.name}</h4>
+        <div class="c-price">${fmt(priceOf(p))}</div>
+        <div class="qty">
+          <button data-dec="${id}" aria-label="Kurangi">−</button><span>${q}</span><button data-inc="${id}" aria-label="Tambah">+</button>
+        </div>
+      </div>
+      <button class="c-rm" data-rm="${id}">Hapus</button>
+    </div>`;
+  }).join('');
+}
+document.getElementById('dwBody').addEventListener('click',e=>{
+  const inc=e.target.closest('[data-inc]'); if(inc){setQty(inc.dataset.inc, cart[inc.dataset.inc]+1);return}
+  const dec=e.target.closest('[data-dec]'); if(dec){setQty(dec.dataset.dec, cart[dec.dataset.dec]-1);return}
+  const rm=e.target.closest('[data-rm]'); if(rm){setQty(rm.dataset.rm,0);toast('Produk dihapus dari keranjang')}
+});
+document.getElementById('checkoutBtn').addEventListener('click',()=>{
+  if(!cartCount()){toast('Keranjang masih kosong 🙈');return}
+  let msg=`Halo ELISA STORE! 👋 Aku mau order:\n\n`;
+  Object.entries(cart).forEach(([id,q],i)=>{
+    const p=byId(id);
+    msg+=`${i+1}. ${p.name} × ${q} — ${fmt(priceOf(p)*q)}\n`;
+  });
+  msg+=`\nTotal: ${fmt(cartTotal())}\nKode promo: ELISA10\n\nMohon info ketersediaan & ongkirnya ya. Terima kasih 🙏`;
+  location.href = waLink(msg);
+});
+
+/* drawer open/close */
+const drawer=document.getElementById('drawer'), ov=document.getElementById('ov');
+function openCart(){drawer.classList.add('open');ov.classList.add('show');document.body.style.overflow='hidden'}
+function closeCart(){drawer.classList.remove('open');ov.classList.remove('show');document.body.style.overflow=''}
+document.querySelectorAll('[data-cart-open]').forEach(b=>b.addEventListener('click',openCart));
+document.querySelectorAll('[data-cart-close]').forEach(b=>b.addEventListener('click',closeCart));
+ov.addEventListener('click',closeCart);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeCart();closeMenu()}});
+syncCart();
+
+/* ================= TOAST ================= */
+function toast(msg){
+  const w=document.getElementById('toasts');
+  const t=document.createElement('div');t.className='toast';t.textContent=msg;w.appendChild(t);
+  setTimeout(()=>{t.classList.add('out');setTimeout(()=>t.remove(),450)},2400);
+}
+
+/* ================= LINK WA DEFAULT ================= */
+document.querySelectorAll('[data-wa-default]').forEach(a=>a.href=waLink(`Halo ELISA STORE! 👋 Aku mau tanya-tanya soal produk kalian.`));
+document.querySelectorAll('[data-wa-msg]').forEach(a=>a.href=waLink(a.dataset.waMsg));
+
+/* ================= TESTIMONI ================= */
+const TESTI=[
+ {n:'Rani',c:'Jakarta',t:'Bahannya adem banget, beda dari toko sebelah yang harganya sama. Adminnya juga sabar bantuin pilih ukuran. Auto langganan!'},
+ {n:'Dewi',c:'Bandung',t:'Order jam 9 pagi, sore udah dikabarin resi. Packing rapi pakai thank-you card pula. Detail kecil kayak gini bikin nagih.'},
+ {n:'Sinta',c:'Surabaya',t:'Dress Kirana-nya juara! Jatuhnya bagus di badan, warnanya persis foto. Udah 3x repeat order dan belum pernah kecewa.'},
+ {n:'Maya',c:'Medan',t:'Sempet ragu karena jauh, ternyata sampai Medan cuma 3 hari dan kondisi aman. Tas rotannya cantik banget, banyak yang nanya.'},
+ {n:'Putri',c:'Makassar',t:'Checkout via WA beneran gampang — pesan auto-keformat, tinggal kirim. Cocok buat yang males ribet install aplikasi ini-itu.'},
+ {n:'Andi',c:'Yogyakarta',t:'Beliin scarf buat kado istri, dibantuin pilih warna sama adminnya. Istri suka, poin suami naik drastis. Terima kasih ELISA!'},
+];
+const tCard=t=>`<div class="t-card"><div class="t-stars">★★★★★</div><p>"${t.t}"</p><div class="t-who"><img src="https://picsum.photos/seed/elisa-customer-${t.n.toLowerCase()}/80/80" alt="${t.n}"><div><b>${t.n}</b><span>${t.c}</span></div></div></div>`;
+const h1=TESTI.slice(0,3).map(tCard).join(''), h2=TESTI.slice(3).map(tCard).join('');
+document.getElementById('tRow1').innerHTML=h1+h1+h1;
+document.getElementById('tRow2').innerHTML=h2+h2+h2;
+
+/* ================= FAQ ================= */
+const FAQ=[
+ ['Bagaimana cara ordernya?','Pilih produk di katalog, klik tombol "+" untuk mengumpulkan di keranjang, lalu tekan "Checkout via WhatsApp". Daftar pesananmu otomatis terformat rapi — kamu tinggal tekan kirim dan admin kami akan membalas.'],
+ ['Boleh tanya detail ukuran & bahan dulu?','Tentu! Semua produk punya panduan ukuran, dan admin siap kirim foto/video detail bahan bila diperlukan. Konsultasi gratis, beli belakangan juga boleh.'],
+ ['Metode pembayaran apa saja yang tersedia?','Transfer bank (BCA, Mandiri, BRI), e-wallet (GoPay, OVO, DANA, ShopeePay), dan COD untuk area tertentu. Detail lengkap dikonfirmasi admin saat chat.'],
+ ['Berapa lama pengirimannya?','1–4 hari kerja tergantung kota tujuan. Paket dikirim setiap hari Senin–Sabtu, dan semua pesanan mendapat nomor resi untuk dilacak.'],
+ ['Kalau ukurannya tidak pas, bisa ditukar?','Bisa. Kami menerima tukar ukuran maksimal 3 hari setelah paket diterima, selama produk belum dipakai dan label masih utuh. Ongkos tukar disesuaikan kasus.'],
+ ['Ada promo untuk pelanggan baru?','Ada! Gunakan kode ELISA10 saat chat untuk diskon 10% order pertamamu. Plus, pantau setiap Jumat — biasanya ada flash sale mingguan.'],
+];
+document.getElementById('faqWrap').innerHTML=FAQ.map(([q,a],i)=>`
+  <div class="faq-item">
+    <button class="faq-q" aria-expanded="false"><span>${q}</span><span class="ic">+</span></button>
+    <div class="faq-a"><p>${a}</p></div>
+  </div>`).join('');
+document.querySelectorAll('.faq-q').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const item=btn.parentElement, ans=item.querySelector('.faq-a'), open=item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(o=>{o.classList.remove('open');o.querySelector('.faq-a').style.maxHeight=null;o.querySelector('.faq-q').setAttribute('aria-expanded','false')});
+    if(!open){item.classList.add('open');ans.style.maxHeight=ans.scrollHeight+'px';btn.setAttribute('aria-expanded','true')}
+  });
+});
+
+/* ================= ANIMASI ================= */
+function observeReveals(root){
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+  (root||document).querySelectorAll('.rv:not(.obs)').forEach(el=>{el.classList.add('obs');io.observe(el)});
+}
+observeReveals();
+
+/* hero line-mask */
+requestAnimationFrame(()=>setTimeout(()=>document.getElementById('heroH1').classList.add('in'),120));
+
+/* scramble decode */
+const CHARS='ELISA✦*#STORE0123456789';
+function scramble(el){
+  const txt=el.dataset.text; let f=0;
+  const iv=setInterval(()=>{
+    el.textContent=txt.split('').map((ch,i)=> ch===' '?' ': (i<f/2?ch:CHARS[Math.floor(Math.random()*CHARS.length)])).join('');
+    f++;
+    if(f/2>=txt.length){el.textContent=txt;clearInterval(iv)}
+  },28);
+}
+if(!REDUCED){
+  const sio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){scramble(e.target);sio.unobserve(e.target)}}),{threshold:.5});
+  document.querySelectorAll('.scr').forEach(el=>sio.observe(el));
+}
+
+/* counters */
+const cio=new IntersectionObserver(es=>es.forEach(e=>{
+  if(!e.isIntersecting) return; cio.unobserve(e.target);
+  const el=e.target, to=parseFloat(el.dataset.to), dec=+(el.dataset.dec||0);
+  const show=v=>el.textContent=v.toLocaleString('id-ID',{minimumFractionDigits:dec,maximumFractionDigits:dec});
+  if(REDUCED){show(to);return}
+  const t0=performance.now(), dur=1400;
+  (function step(t){
+    const p=Math.min((t-t0)/dur,1), ease=1-Math.pow(1-p,3);
+    show(to*ease); if(p<1) requestAnimationFrame(step);
+  })(t0);
+}),{threshold:.5});
+document.querySelectorAll('.cnt').forEach(el=>cio.observe(el));
+
+/* ================= HEADER / MENU ================= */
+const hdr=document.getElementById('hdr');
+addEventListener('scroll',()=>hdr.classList.toggle('sc',scrollY>10),{passive:true});
+const mMenu=document.getElementById('mMenu');
+function closeMenu(){mMenu.classList.remove('open');document.body.style.overflow=''}
+document.getElementById('burger').addEventListener('click',()=>{mMenu.classList.add('open');document.body.style.overflow='hidden'});
+document.getElementById('mClose').addEventListener('click',closeMenu);
+mMenu.querySelectorAll('.m-links a').forEach(a=>a.addEventListener('click',closeMenu));
+
+document.getElementById('year').textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
